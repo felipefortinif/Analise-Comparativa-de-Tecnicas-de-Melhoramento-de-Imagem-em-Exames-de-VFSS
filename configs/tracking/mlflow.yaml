@@ -1,0 +1,4 @@
+# MLflow local: nada sai da máquina.
+# Interface:  uv run mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db
+uri: sqlite:///${paths.root}/mlruns/mlflow.db
+artifact_root: ${paths.root}/mlruns/artifacts

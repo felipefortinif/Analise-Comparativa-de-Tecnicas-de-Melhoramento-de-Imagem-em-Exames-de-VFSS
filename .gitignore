@@ -1,0 +1,36 @@
+# --- Dados clínicos: nunca versionar ---------------------------------------
+data/*
+!data/README.md
+# Defesa extra caso algum exame seja copiado para fora de data/
+*.dcm
+*.dicom
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.mpg
+*.mpeg
+
+# --- Artefatos de execução ---------------------------------------------------
+outputs/
+mlruns/
+mlartifacts/
+
+# --- Python --------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+
+# --- Editor / SO ---------------------------------------------------------------
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

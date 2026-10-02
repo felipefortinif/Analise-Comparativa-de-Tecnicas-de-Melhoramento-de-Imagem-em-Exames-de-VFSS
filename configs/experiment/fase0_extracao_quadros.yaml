@@ -1,0 +1,30 @@
+# @package _global_
+#
+# Fase 0 — lê cada exame, extrai os quadros sem alteração e grava no formato
+# padronizado (PNG sem perda + manifestos CSV).
+experiment_name: fase0_extracao_quadros
+pipeline: extract_frames
+
+extract:
+  input_dir: ${paths.raw}
+  output_dir: ${paths.interim}/frames/${experiment_name}
+  # Recusa sobrescrever uma extração existente; troque o experiment_name ou
+  # passe extract.overwrite=true conscientemente.
+  overwrite: false
+
+  video_extensions: [.mp4, .avi, .mov, .mkv, .wmv, .mpg, .mpeg]
+  dicom_extensions: [.dcm, .dicom]
+  # Muitos aparelhos exportam DICOM sem extensão; identifica pelo cabeçalho.
+  detect_extensionless_dicom: true
+
+  # Caminho relativo a input_dir (com "/") -> origem, paciente e nome do vídeo.
+  # Layout esperado: <origem>/<paciente>/<vídeo>.<ext>
+  # Arquivos fora do padrão entram em failures.csv; o paciente nunca é adivinhado.
+  path_regex: '^(?P<source>[^/]+)/(?P<patient_id>[^/]+)/(?P<video_name>.+?)(?:\.[^./]*)?$'
+
+  frame_step: 1                # 1 = todos os quadros
+  max_frames_per_video: null   # null = sem limite
+  grayscale: true              # VFSS é monocromático; vídeos comuns chegam em 3 canais
+  png_compression: 3           # 0–9, só afeta tamanho/tempo (PNG é sem perda)
+  hash_source_files: true      # SHA-256 do arquivo original, para achar duplicatas na Fase 1
+  fail_fast: false             # false = registra o vídeo com erro e segue

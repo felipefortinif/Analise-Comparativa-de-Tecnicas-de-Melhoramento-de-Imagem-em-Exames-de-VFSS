@@ -1,0 +1,30 @@
+# Configuração raiz.
+#
+# Cada experimento vive em configs/experiment/<nome>.yaml e é escolhido na
+# linha de comando:
+#
+#   uv run python -m vfss experiment=<nome>
+#
+# Nenhum parâmetro experimental é escrito no código: o que não estiver aqui
+# ou no arquivo do experimento não existe.
+defaults:
+  - paths: default
+  - tracking: mlflow
+  - _self_
+  - experiment: ???
+
+seed: 42
+deterministic: true
+
+# Definidos pelo arquivo do experimento.
+experiment_name: ???
+pipeline: ???
+
+hydra:
+  run:
+    dir: ${paths.runs}/${experiment_name}/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${paths.runs}/${experiment_name}/multirun_${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: false
